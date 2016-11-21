@@ -1,0 +1,26 @@
+{
+  "name": "nodeapigit",
+  "version": "1.0.0",
+  "description": "RESTful Node.js API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmetsemsettinozdemirden/nodeApi.git"
+  },
+  "author": "A. Semsettin Ozdemirden",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ahmetsemsettinozdemirden/nodeApi/issues"
+  },
+  "homepage": "https://github.com/ahmetsemsettinozdemirden/nodeApi#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jsonwebtoken": "^7.1.9",
+    "mongoose": "^4.6.8",
+    "morgan": "^1.7.0"
+  }
+}
