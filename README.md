@@ -43,7 +43,7 @@ http://localhost:1337/api/signUp
 - {success: false, message: 'username or email is already using!'}
 - {success: true, message: 'user created!'}
 
-** The rest of methods require a token. User have to sign in before using them. **
+**The rest of methods require a token. User have to sign in before using them.**
 
 #### List All Users
 
