@@ -48,4 +48,3 @@ http://localhost:1337/api/signUp
 #### List All Users
 
 #### List User by ID
-
