@@ -14,7 +14,7 @@ Requires username and password of user. Uses POST http method. Searchs the usern
 http://localhost:1337/api/signIn
 ```
 
-######## The List of Responses:
+##### The List of Responses:
 - {success: false, message: 'fill in the blanks!'}
 - {success: false, message: 'user not found!'}
 - {success: false, message: 'invalid password!!'}
