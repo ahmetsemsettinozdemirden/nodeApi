@@ -6,19 +6,22 @@ var apiRouter = express.Router();
 var User = require('../models/user');
 const config = require('../config');
 
+// TODO's
+/*
+ * delete user
+ */
+
 apiRouter.post('/signIn', function (req, res) {
 
     // check the username and password fields
     if (req.body.username !== '' && req.body.password !== '') {
 
         // search username in database
-        User.findOne({
-            username: req.body.username,
-        }, function (err, user) {
+        User.findOne({username: req.body.username}, function (err, user) {
 
             if (err) throw err;
 
-            // check username
+            // check user via username
             if (!user) {
                 res.json({success: false, message: 'user not found!'});
             } else if (user) {
@@ -33,25 +36,10 @@ apiRouter.post('/signIn', function (req, res) {
                     });
 
                     // response to user with token
-                    res.json({success: true, message: 'succesful', token: token})
+                    res.json({success: true, message: 'succesful', token: token, userId: user._id});
                 }
             }
-
         });
-
-        /*
-
-         -> Count based sign in.
-
-         User.count({username: req.body.username, password: req.body.password}, function (err, c) {
-         if (err)
-         console.error(err);
-         else if (c !== 0) {
-         res.json({success: true, message: 'giris basarili'});
-         }else
-         res.json({success: false, message: 'kullanici adi veya sifre hatali'});
-         })
-         */
 
     } else {
         res.json({success: false, message: 'fill in the blanks!'});
@@ -91,7 +79,7 @@ apiRouter.use(function (req, res, next) {
             if (err) {
                 return res.json({success: false, message: 'failed to authenticate token'});
             } else {
-                console.log("decoded", decoded);
+                //console.log("decoded", decoded);
                 req.decoded = decoded;
                 next();
             }
@@ -114,19 +102,60 @@ apiRouter.get('/users/', function (req, res) {
     User.find({}, function (err, users) {
         if (err) throw err;
         res.json(users);
-    })
+    });
 });
 
 // get user by id
 apiRouter.get('/users/:id', function (req, res) {
     User.findById(req.params.id, function (err, user) {
         if (err) throw err;
-        res.json(user);
+
+        if (!user) {
+            res.json({success: false, message: 'user not found!'});
+        } else {
+            res.json(user);
+        }
+    });
+});
+
+// update one user by id
+apiRouter.patch('/users/:id', function (req, res) {
+
+    User.findById(req.params.id, function (err, user) {
+        if (err) throw err;
+
+        // check the user exists
+        if (!user) {
+            res.json({success: false, message: 'user not found!'});
+        } else {
+
+            // if there is changes on user's properties use them, else use most recent properties of user
+            var _username = req.body.newUsername ? req.body.newUsername : user.username;
+            var _password = req.body.newPassword ? req.body.newPassword : user.password;
+            var _email = req.body.newEmail ? req.body.newEmail : user.email;
+
+            User.findOneAndUpdate({_id: req.params.id}, {
+                username: _username,
+                password: _password,
+                email: _email
+            }, function (err, user) {
+                if (err) throw err;
+                res.json({result: true, message: 'Updated successfully!'});
+            })
+        }
+    })
+
+});
+
+apiRouter.delete('/users/:id', function (req, res) {
+
+    console.log("user delete request: ", req.params.id);
+
+    User.findByIdAndRemove({_id: req.params.id}, function (err, user) {
+        if (err) throw err;
+        res.json({result: true, message: 'Deleted successfully!'});
     })
 })
 
-// TODO's
-// update user
-// delete user
 
 module.exports = apiRouter;
